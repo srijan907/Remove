@@ -2,87 +2,143 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Auto Image BG Remover by MR-RABBIT</title>
+  <title>Auto BG Remover by MR-RABBIT</title>
   <style>
     body {
-      background: #0f172a;
-      color: white;
+      background: #0f0f1a;
       font-family: Arial, sans-serif;
+      color: #fff;
       text-align: center;
-      padding: 40px 20px;
+      padding: 40px;
     }
 
     h1 {
       font-size: 2em;
-      color: #3b82f6;
-      text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6;
+      color: #00f7ff;
+      text-shadow: 0 0 10px #00f7ff, 0 0 20px #00f7ff;
     }
 
-    .card {
-      background: #1e293b;
-      padding: 20px;
+    .container {
+      background: #111827;
+      padding: 30px;
       border-radius: 12px;
+      box-shadow: 0 0 15px #00f7ff;
       display: inline-block;
-      margin-top: 30px;
-      box-shadow: 0 0 15px #3b82f6, 0 0 25px #3b82f6;
-      transition: 0.3s ease;
     }
 
-    .card:hover {
-      box-shadow: 0 0 25px #60a5fa, 0 0 40px #60a5fa;
-    }
-
-    input[type="file"],
-    button {
+    input, button, a {
       margin: 10px 0;
-      padding: 10px 20px;
-      background: #3b82f6;
+      padding: 12px 20px;
       border: none;
       border-radius: 8px;
-      color: white;
-      font-size: 16px;
+      font-size: 1em;
       cursor: pointer;
-      box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6;
-      transition: 0.3s ease;
     }
 
-    button:hover,
-    input[type="file"]:hover {
-      background: #60a5fa;
-      box-shadow: 0 0 20px #60a5fa, 0 0 30px #60a5fa;
+    input[type="file"] {
+      background-color: #1e3a8a;
+      color: #fff;
+    }
+
+    button {
+      background-color: #2563eb;
+      color: white;
+      text-shadow: 0 0 5px #00f7ff;
+      box-shadow: 0 0 10px #00f7ff;
     }
 
     a {
-      color: #60a5fa;
-      text-decoration: none;
-    }
-
-    footer {
-      margin-top: 30px;
-      color: #94a3b8;
-    }
-
-    .highlight {
-      background: blue;
+      display: inline-block;
+      background-color: #10b981;
       color: white;
-      padding: 2px 6px;
-      border-radius: 4px;
+      text-decoration: none;
+      box-shadow: 0 0 10px #00f7ff;
+    }
+
+    img {
+      margin-top: 20px;
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #00f7ff;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #888;
+    }
+
+    .footer a {
+      color: #00f7ff;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <h1>Auto Image BG Remover by<br>MR-RABBIT</h1>
-  
-  <div class="card">
-    <p><strong>Upload Image</strong></p>
-    <input type="file" accept="image/*"><br>
-    <button>Remove background</button><br>
-    <button>Download Image ⬇️</button>
+
+  <h1>Auto Image BG Remover by MR-RABBIT</h1>
+  <div class="container">
+    <input type="file" id="imageInput"><br>
+    <button onclick="handleUpload()">Remove Background</button><br>
+    <a id="downloadBtn" download="no-bg.png">Download Image</a><br>
+    <img id="resultImage" src="">
   </div>
 
-  <footer>
-    <p><a href="#">More Projects</a></p>
-    <p>Crafted with ❤️ by <span class="highlight">Mr-rabbit</span></p>
-  </footer>
+  <div class="footer">
+    Crafted with ❤️ by <a href="#">Mr-rabbit</a>
+  </div>
+
+  <script>
+    const apiKeys = [
+      "API_KEY_1", "API_KEY_2", "API_KEY_3", "API_KEY_4", "API_KEY_5",
+      "API_KEY_6", "API_KEY_7", "API_KEY_8", "API_KEY_9", "API_KEY_10",
+      "API_KEY_11", "API_KEY_12", "API_KEY_13", "API_KEY_14", "API_KEY_15"
+    ];
+
+    function getRandomKey() {
+      return apiKeys[Math.floor(Math.random() * apiKeys.length)];
+    }
+
+    async function removeBackground(file) {
+      const formData = new FormData();
+      formData.append("image_file", file);
+      formData.append("size", "auto");
+
+      const apiKey = getRandomKey();
+
+      try {
+        const response = await fetch("https://api.remove.bg/v1.0/removebg", {
+          method: "POST",
+          headers: {
+            "X-Api-Key": apiKey,
+          },
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`API error: ${response.statusText}`);
+        }
+
+        const blob = await response.blob();
+        const resultUrl = URL.createObjectURL(blob);
+        document.getElementById("resultImage").src = resultUrl;
+        document.getElementById("downloadBtn").href = resultUrl;
+
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to remove background. Please try again.");
+      }
+    }
+
+    function handleUpload() {
+      const input = document.getElementById("imageInput");
+      if (input.files.length > 0) {
+        removeBackground(input.files[0]);
+      } else {
+        alert("Please upload an image first.");
+      }
+    }
+  </script>
+
 </body>
 </html>
