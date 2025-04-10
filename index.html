@@ -1,59 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Background Remover</title>
+  <meta charset="UTF-8">
+  <title>Auto Image BG Remover by MR-RABBIT</title>
   <style>
-    body { font-family: sans-serif; text-align: center; background: #f0f0f0; padding: 30px; }
-    input, button { margin: 10px; padding: 10px; }
-    img { margin-top: 20px; max-width: 100%; }
+    body {
+      background: #0f172a;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2em;
+      color: #3b82f6;
+      text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-top: 30px;
+      box-shadow: 0 0 15px #3b82f6, 0 0 25px #3b82f6;
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 0 25px #60a5fa, 0 0 40px #60a5fa;
+    }
+
+    input[type="file"],
+    button {
+      margin: 10px 0;
+      padding: 10px 20px;
+      background: #3b82f6;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6;
+      transition: 0.3s ease;
+    }
+
+    button:hover,
+    input[type="file"]:hover {
+      background: #60a5fa;
+      box-shadow: 0 0 20px #60a5fa, 0 0 30px #60a5fa;
+    }
+
+    a {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+
+    footer {
+      margin-top: 30px;
+      color: #94a3b8;
+    }
+
+    .highlight {
+      background: blue;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
-  <h2>Background Remover</h2>
-  <input type="file" id="fileInput"><br>
-  <button onclick="start()">Remove Background</button>
-  <div id="result"></div>
+  <h1>Auto Image BG Remover by<br>MR-RABBIT</h1>
+  
+  <div class="card">
+    <p><strong>Upload Image</strong></p>
+    <input type="file" accept="image/*"><br>
+    <button>Remove background</button><br>
+    <button>Download Image ⬇️</button>
+  </div>
 
-  <script>
-    const apiKeys = [
-      "YOUR_API_KEY_1",
-      "YOUR_API_KEY_2",
-      "YOUR_API_KEY_3"
-    ];
-    let currentKey = 0;
-
-    async function start() {
-      const file = document.getElementById('fileInput').files[0];
-      if (!file) return alert("Please upload an image!");
-
-      for (let i = 0; i < apiKeys.length; i++) {
-        const formData = new FormData();
-        formData.append("image_file", file);
-        formData.append("size", "auto");
-
-        const res = await fetch("https://api.remove.bg/v1.0/removebg", {
-          method: "POST",
-          headers: { "X-Api-Key": apiKeys[currentKey] },
-          body: formData
-        });
-
-        if (res.status === 200) {
-          const blob = await res.blob();
-          const url = URL.createObjectURL(blob);
-          document.getElementById("result").innerHTML = `<img src="${url}">`;
-          break;
-        } else if (res.status === 402) {
-          currentKey++;
-          if (currentKey >= apiKeys.length) {
-            alert("All API keys are used up!");
-            break;
-          }
-        } else {
-          alert("Something went wrong: " + res.status);
-          break;
-        }
-      }
-    }
-  </script>
+  <footer>
+    <p><a href="#">More Projects</a></p>
+    <p>Crafted with ❤️ by <span class="highlight">Mr-rabbit</span></p>
+  </footer>
 </body>
 </html>
