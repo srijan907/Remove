@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Background Remover</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; background: #f0f0f0; padding: 30px; }
+    input, button { margin: 10px; padding: 10px; }
+    img { margin-top: 20px; max-width: 100%; }
+  </style>
+</head>
+<body>
+  <h2>Background Remover</h2>
+  <input type="file" id="fileInput"><br>
+  <button onclick="start()">Remove Background</button>
+  <div id="result"></div>
+
+  <script>
+    const apiKeys = [
+      "YOUR_API_KEY_1",
+      "YOUR_API_KEY_2",
+      "YOUR_API_KEY_3"
+    ];
+    let currentKey = 0;
+
+    async function start() {
+      const file = document.getElementById('fileInput').files[0];
+      if (!file) return alert("Please upload an image!");
+
+      for (let i = 0; i < apiKeys.length; i++) {
+        const formData = new FormData();
+        formData.append("image_file", file);
+        formData.append("size", "auto");
+
+        const res = await fetch("https://api.remove.bg/v1.0/removebg", {
+          method: "POST",
+          headers: { "X-Api-Key": apiKeys[currentKey] },
+          body: formData
+        });
+
+        if (res.status === 200) {
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          document.getElementById("result").innerHTML = `<img src="${url}">`;
+          break;
+        } else if (res.status === 402) {
+          currentKey++;
+          if (currentKey >= apiKeys.length) {
+            alert("All API keys are used up!");
+            break;
+          }
+        } else {
+          alert("Something went wrong: " + res.status);
+          break;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
