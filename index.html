@@ -1,95 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>BG Remover by MR-RABBIT</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BG Remover - Fullscreen</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
       font-family: 'Segoe UI', sans-serif;
+      color: #fff;
     }
 
     body {
-      background: linear-gradient(to bottom right, #0f172a, #1e293b);
-      color: #fff;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
       padding: 20px;
     }
 
     .container {
       background: rgba(17, 24, 39, 0.95);
       padding: 40px;
-      border-radius: 15px;
+      border-radius: 20px;
       box-shadow: 0 0 25px #00f7ff;
-      max-width: 400px;
+      max-width: 450px;
       width: 100%;
       text-align: center;
     }
 
     h1 {
-      font-size: 26px;
+      font-size: 28px;
       color: #00f7ff;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       text-shadow: 0 0 10px #00f7ff;
     }
 
     input[type="file"] {
-      padding: 12px;
+      padding: 14px;
       background: #1e3a8a;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       width: 100%;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       box-shadow: 0 0 10px #00f7ff;
     }
 
     button {
       background: #2563eb;
       color: white;
-      padding: 12px 20px;
+      padding: 14px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
-      box-shadow: 0 0 15px #00f7ff;
-      margin-bottom: 15px;
       width: 100%;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px #00f7ff;
     }
 
     #downloadBtn {
       display: none;
       text-decoration: none;
       background: #10b981;
-      padding: 12px;
+      padding: 14px;
       color: white;
       border-radius: 10px;
       box-shadow: 0 0 15px #00f7ff;
     }
 
     img {
-      margin-top: 20px;
+      margin-top: 25px;
       max-width: 100%;
       border-radius: 12px;
       box-shadow: 0 0 20px #00f7ff;
     }
 
     .footer {
-      margin-top: 30px;
+      position: absolute;
+      bottom: 10px;
       font-size: 14px;
-      color: #999;
+      color: #aaa;
+      text-align: center;
+      width: 100%;
     }
 
     .footer a {
       color: #00f7ff;
       text-decoration: none;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 25px;
+        border-radius: 16px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
@@ -158,6 +174,5 @@
       }
     }
   </script>
-
 </body>
 </html>
