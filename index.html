@@ -2,182 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Image Background Remover</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rabbit Background Remover</title>
+  <link rel="icon" href="https://files.catbox.moe/wcx130.jpeg" type="image/jpeg" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
-      padding: 0;
-      background: #0f0f0f;
-      color: white;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .page-title {
-      font-size: 36px;
-      margin: 30px 0 10px;
-      text-shadow: 0 0 20px #00fff7, 0 0 30px #00fff7;
-      color: #00fff7;
-      text-align: center;
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid #00fff7;
-      padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 25px #00fff7;
-      width: 90%;
-      max-width: 500px;
+      background: linear-gradient(120deg, #1a1a2e, #16213e);
+      font-family: monospace;
+      color: #39ff14;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 25px;
-      min-height: 500px;
-      margin-bottom: 40px;
     }
-
-    input[type="file"] {
-      padding: 15px;
-      border-radius: 10px;
-      background: #1a1a1a;
+    .neon-text {
+      text-shadow: 0 0 3px #39ff14, 0 0 6px #39ff14;
+    }
+    .rainbow-border {
+      border: 1.5px solid;
+      border-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet) 1;
+      box-shadow: 0 0 4px #39ff14, 0 0 8px #39ff14;
+    }
+    textarea, input {
+      background-color: black;
       color: white;
-      border: 1px solid #555;
+      padding: 16px;
+      font-size: 1.25rem;
+      border-radius: 10px;
       width: 100%;
-      text-align: center;
+      resize: none;
     }
-
-    button {
-      background: #00fff7;
-      color: black;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 0 15px #00fff7;
+    input[type="number"], input[type="text"] {
+      height: 60px;
     }
-
-    button:hover {
-      background: #02d1c4;
-    }
-
-    a#downloadBtn {
-      display: none;
-      text-decoration: none;
-      background: #0aff9d;
-      color: black;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      box-shadow: 0 0 15px #0aff9d;
-    }
-
-    img#resultImage {
-      max-width: 100%;
-      border-radius: 12px;
-      margin-top: 20px;
-    }
-
-    .footer {
-      margin-top: auto;
-      padding: 20px;
-      text-align: center;
-      color: #888;
-      font-size: 14px;
-    }
-
-    .footer a {
-      color: #00fff7;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
+    .btn {
+      font-size: 1.1rem;
+      padding: 12px 24px;
+      box-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff;
     }
   </style>
 </head>
 <body>
-
-  <h1 class="page-title">Image Background Remover</h1>
-
-  <div class="container">
-    <input type="file" id="imageInput" accept="image/*">
-    <button onclick="handleUpload()">Remove Background</button>
-    <a id="downloadBtn" download="no-bg.png">Download Image</a>
-    <img id="resultImage" src="">
+  <div class="text-center mb-6">
+    <h1 class="text-4xl font-bold neon-text">Rabbit Background Remover</h1>
+    <h2 class="text-green-400 mt-2 text-lg">Remove image backgrounds instantly with neon style!</h2>
   </div>
 
-  <div class="footer">
-    Made with ❤️ by <a href="#">Mr-Rabbit</a>
+  <div class="w-full max-w-xl space-y-6 p-6 rainbow-border">
+    <div>
+      <label class="block neon-text mb-2">Upload Your Image:</label>
+      <input type="file" accept="image/*" class="rainbow-border w-full" />
+    </div>
+
+    <div>
+      <label class="block neon-text mb-2">Enter API Key:</label>
+      <input type="text" placeholder="Paste your API key here..." class="rainbow-border w-full" />
+    </div>
+
+    <button class="bg-blue-600 text-white rounded btn w-full">Remove Background</button>
   </div>
-
-  <script>
-    const API_KEYS = [
-      "api_key_1", "api_key_2", "api_key_3", "api_key_4", "api_key_5",
-      "api_key_6", "api_key_7", "api_key_8", "api_key_9", "api_key_10",
-      "api_key_11", "api_key_12", "api_key_13", "api_key_14", "api_key_15"
-    ];
-
-    let currentKeyIndex = 0;
-
-    async function handleUpload() {
-      const input = document.getElementById('imageInput');
-      if (input.files.length === 0) {
-        alert("Please select an image first!");
-        return;
-      }
-
-      const file = input.files[0];
-      const formData = new FormData();
-      formData.append("image_file", file);
-      formData.append("size", "auto");
-
-      let success = false;
-      let url = "";
-
-      while (!success && currentKeyIndex < API_KEYS.length) {
-        try {
-          const response = await fetch("https://api.remove.bg/v1.0/removebg", {
-            method: "POST",
-            headers: {
-              "X-Api-Key": API_KEYS[currentKeyIndex],
-            },
-            body: formData,
-          });
-
-          if (!response.ok) {
-            currentKeyIndex++;
-            continue;
-          }
-
-          const blob = await response.blob();
-          url = URL.createObjectURL(blob);
-          success = true;
-        } catch (err) {
-          console.error("Error:", err);
-          currentKeyIndex++;
-        }
-      }
-
-      if (!success) {
-        alert("All API keys are used or invalid.");
-        return;
-      }
-
-      const resultImage = document.getElementById("resultImage");
-      resultImage.src = url;
-
-      const downloadBtn = document.getElementById("downloadBtn");
-      downloadBtn.href = url;
-      downloadBtn.style.display = "inline-block";
-    }
-  </script>
-
 </body>
 </html>
