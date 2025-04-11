@@ -59,34 +59,27 @@
     </div>
 
     <button class="bg-blue-600 text-white rounded btn w-full">Remove Background</button>
+
+    <!-- Output container -->
+    <div id="output" class="hidden p-4 border rounded-lg mt-4 text-center space-y-4 rainbow-border">
+      <img id="resultImage" class="mx-auto max-w-full rounded-xl" />
+      <a id="downloadBtn" class="inline-block bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600" download="removed-bg.png">Download Image</a>
+    </div>
   </div>
 
   <script>
     const apiKeys = [
-      "5xNUrmC8c4k7dQRgzDSzWPac",
-      "api_key_2",
-      "api_key_3",
-      "api_key_4",
-      "api_key_5",
-      "api_key_6",
-      "api_key_7",
-      "api_key_8",
-      "api_key_9",
-      "api_key_10",
-      "api_key_11",
-      "api_key_12",
-      "api_key_13",
-      "api_key_14",
-      "api_key_15",
-      "api_key_16",
-      "api_key_17",
-      "api_key_18",
-      "api_key_19",
-      "api_key_20"
+      "api_key_1", "api_key_2", "api_key_3", "api_key_4", "api_key_5",
+      "api_key_6", "api_key_7", "api_key_8", "api_key_9", "api_key_10",
+      "api_key_11", "api_key_12", "api_key_13", "api_key_14", "api_key_15",
+      "api_key_16", "api_key_17", "api_key_18", "api_key_19", "api_key_20"
     ];
 
     const removeButton = document.querySelector("button");
     const fileInput = document.querySelector("input[type='file']");
+    const outputDiv = document.getElementById("output");
+    const resultImage = document.getElementById("resultImage");
+    const downloadBtn = document.getElementById("downloadBtn");
 
     removeButton.addEventListener("click", async () => {
       const file = fileInput.files[0];
@@ -111,13 +104,9 @@
           if (response.ok) {
             const blob = await response.blob();
             const imgUrl = URL.createObjectURL(blob);
-
-            const img = document.createElement("img");
-            img.src = imgUrl;
-            img.style.marginTop = "20px";
-            img.className = "max-w-full border rounded-xl shadow-xl";
-            document.body.appendChild(img);
-
+            resultImage.src = imgUrl;
+            downloadBtn.href = imgUrl;
+            outputDiv.classList.remove("hidden");
             success = true;
             break;
           } else {
